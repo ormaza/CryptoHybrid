@@ -26,7 +26,6 @@ namespace Cripto
         {
             try
             {
-                System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
 
                 RijndaelManaged rijndaelCipher = new RijndaelManaged();
                 rijndaelCipher.Mode = CipherMode.CBC;
@@ -35,8 +34,7 @@ namespace Cripto
                 rijndaelCipher.KeySize = 0x80;
                 rijndaelCipher.BlockSize = 0x80;
 
-                string decodedUrl = HttpUtility.UrlDecode(entrada.texto);
-                byte[] encryptedData = Convert.FromBase64String(decodedUrl);
+                byte[] encryptedData = Convert.FromBase64String(entrada.texto);
 
                 byte[] pwdBytes = Encoding.UTF8.GetBytes(entrada.chave);
                 byte[] keyBytes = new byte[0x10];
@@ -59,7 +57,7 @@ namespace Cripto
                 rijndaelCipher.IV = viBytes;
 
                 byte[] plainText = rijndaelCipher.CreateDecryptor().TransformFinalBlock(encryptedData, 0, encryptedData.Length);
-                return encoding.GetString(plainText);
+                return Encoding.UTF8.GetString(plainText);
             }
             catch (Exception ex)
             {
