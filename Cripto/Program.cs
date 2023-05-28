@@ -22,12 +22,14 @@ namespace Cripto
             Console.WriteLine("decriptada: " + decriptada);
 
             DateTime date = DateTime.Now;
-            int shift = (date.Year % date.Month) + (date.Day/date.Month);
-            encriptada = PoorEncrypt("ormazabal lima do nascimento", shift);
+            int shift = (date.Year % date.Month) + (date.Day / date.Month);
+            encriptada = PoorEncrypt("VAM=1.2.3&MachineId=ABFGGF1234", shift);
             decriptada = PoorDecrypt(encriptada, shift);
 
             Console.WriteLine("encriptado: " + encriptada);
             Console.WriteLine("decriptada: " + decriptada);
+
+            Console.WriteLine("decriptada fixa: " + PoorDecrypt("J<f;F:V9UN^OGOtNQJ]IUEklPQgmYvCqppOkpiwUA.o;z6Y:q6Q9VEOUgIb^", shift));
         }
 
         static string Decrypt(Entrada entrada)
@@ -126,9 +128,11 @@ namespace Cripto
                 {
                     nova += (char) (texto[i] + shift);
                     nova += (char)(random.Next(65, 122 + 1) % 255);
-                    nova += (char)(random.Next(65, 122 + 1) % 255);
                 }
-                return "ios" + nova;
+
+                string reversa = "";
+                for (int i = nova.Length - 1; i >= 0; i--) reversa += nova[i];
+                return reversa;
             }
             catch (Exception ex)
             {
@@ -140,19 +144,15 @@ namespace Cripto
         {
             try
             {
-                if (texto.Substring(0, 3) == "ios")
+                string texto2 = "";
+                for (int i = texto.Length - 1; i >= 0; i--) texto2 += texto[i];
+
+                string nova = "";
+                for (int i = 0; i < texto2.Length; i+=2)
                 {
-                    string texto2;
-                    texto2 = texto.Substring(3);
-                    string nova = "";
-                    for (int i = 0; i < texto2.Length; i+=3)
-                    {
-                        nova += (char)(texto2[i] - shift);
-                    }
-                    return nova;
+                    nova += (char)(texto2[i] - shift);
                 }
-                else
-                    return "nao tem ios";
+                return nova;
             }
             catch (Exception ex)
             {
